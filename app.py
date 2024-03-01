@@ -3,7 +3,7 @@
 import sys
 
 from pystray import Icon as PystrayIcon, Menu as PystrayMenu, MenuItem as PystrayMenuItem
-from PIL import Image, ImageDraw
+from PIL import Image
 from util.keyboardListener import KeyboardListener
 from util.loadSetting import getConfigDict, keyIsPress
 setting_dict = getConfigDict()
@@ -102,6 +102,7 @@ def main():
     # 开启图标,阻塞主线程
     barIcon()
     # 图标关闭,退出程序
+    listener.stop()
     exit(0)
 
 
