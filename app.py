@@ -1,7 +1,5 @@
 #!/usr/bin/python3
 # -*- encoding: utf-8 -*-
-import sys
-
 from pystray import Icon as PystrayIcon, Menu as PystrayMenu, MenuItem as PystrayMenuItem
 from PIL import Image
 from util.keyboardListener import KeyboardListener
@@ -100,16 +98,22 @@ def barIcon(image_path='./icon.png'):
     """
     用于显示托盘图标
     """
+    global setting_dict
     def on_exit():
         print('exit触发')
         icon.stop()
+    def refresh_config():
+        global setting_dict
+        print('refresh_config触发')
+        setting_dict = getConfigDict()
 
     # 加载图标图像
     icon_image = Image.open(image_path)
 
     # 创建菜单
     menu = PystrayMenu(
-        PystrayMenuItem('exit', action=on_exit)
+        PystrayMenuItem('refreshConfig', action=refresh_config),
+        PystrayMenuItem('exit', action=on_exit),
     )
 
     # 创建图标
