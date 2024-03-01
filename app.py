@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 # -*- encoding: utf-8 -*-
+import sys
 from pystray import Icon as PystrayIcon, Menu as PystrayMenu, MenuItem as PystrayMenuItem
 from PIL import Image
 from util.keyboardListener import KeyboardListener
@@ -132,7 +133,7 @@ def main():
     barIcon()
     # 图标关闭,退出程序
     listener.stop()
-    exit(0)
+    sys.exit(0)
 
 
 if __name__ == '__main__':
