@@ -141,8 +141,8 @@ def barIcon(image_path='./icon.png'):
     )
 
     # 创建图标
-    icon = PystrayIcon('keyboardOperatedMouse', icon_image,
-                       'keyboardOperatedMouse', menu)
+    icon = PystrayIcon('keyboardControlMouse', icon_image,
+                       'keyboardControlMouse', menu)
 
     # 开始运行图标
     icon.run()
