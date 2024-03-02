@@ -104,13 +104,16 @@ def get_paths():
     # 获取当前文件所在路径
     current_file_dir = os.path.dirname(__file__)
     print(f"文件所在路径：{current_file_dir}")
+    # 如果文件所在路径末尾是(_internal),跳转到上一级
+    if '_internal' == current_file_dir[-9:]:
+        current_file_dir = current_file_dir[:-9]
+        print('internal')
+        print(f"文件所在路径：{current_file_dir}")
 
     # 如果工作路径不是文件所在路径，切换到文件所在路径
     if current_work_dir != current_file_dir:
         os.chdir(current_file_dir)
         print("已切换到文件所在路径。")
-
-
 
 
 def barIcon(image_path='./icon.png'):
@@ -148,7 +151,7 @@ def barIcon(image_path='./icon.png'):
 def main():
     # 确保工作路径正确
     get_paths()
-    global mouse_ctl,setting_dict
+    global mouse_ctl, setting_dict
     mouse_ctl = MouseController()
     setting_dict = getConfigDict()
     # 开启键盘监听器
