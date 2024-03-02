@@ -1,13 +1,13 @@
 #!/usr/bin/python3
 # -*- encoding: utf-8 -*-
+import os
 import sys
 from pystray import Icon as PystrayIcon, Menu as PystrayMenu, MenuItem as PystrayMenuItem
 from PIL import Image
 from util.keyboardListener import KeyboardListener
 from util.loadSetting import getConfigDict, keyIsPress
 from util.mouseController import MouseController
-mouse_ctl = MouseController()
-setting_dict = getConfigDict()
+
 left_mouse_button_flag = False
 right_mouse_button_flag = False
 middle_mouse_button_flag = False
@@ -95,14 +95,34 @@ def press(keys):
             mouse_scroll_right_flag = False
 
 
+def get_paths():
+    """确保工作路径正确"""
+    # 获取当前工作路径
+    current_work_dir = os.getcwd()
+    print(f"当前工作路径：{current_work_dir}")
+
+    # 获取当前文件所在路径
+    current_file_dir = os.path.dirname(__file__)
+    print(f"文件所在路径：{current_file_dir}")
+
+    # 如果工作路径不是文件所在路径，切换到文件所在路径
+    if current_work_dir != current_file_dir:
+        os.chdir(current_file_dir)
+        print("已切换到文件所在路径。")
+
+
+
+
 def barIcon(image_path='./icon.png'):
     """
     用于显示托盘图标
     """
     global setting_dict
+
     def on_exit():
         print('exit触发')
         icon.stop()
+
     def refresh_config():
         global setting_dict
         print('refresh_config触发')
@@ -126,6 +146,11 @@ def barIcon(image_path='./icon.png'):
 
 
 def main():
+    # 确保工作路径正确
+    get_paths()
+    global mouse_ctl,setting_dict
+    mouse_ctl = MouseController()
+    setting_dict = getConfigDict()
     # 开启键盘监听器
     listener = KeyboardListener(press, setting_dict['SCANNING_FREQUENCY'])
     listener.start()
