@@ -1,4 +1,7 @@
 # -*- encoding: utf-8 -*-
+import os
+
+
 def getConfigDict():
     """
     读取配置文件并返回一个字典
@@ -6,10 +9,12 @@ def getConfigDict():
     Returns:
     - dict
     """
+    local_path = './local/config/config.ini'
+    file_path = local_path if os.path.exists(local_path) else './config/config.ini'
     # 创建一个空字典
     result = {}
     # 打开文件
-    with open('./config/config.ini', "r", encoding='utf-8') as f:
+    with open(file_path, "r", encoding='utf-8') as f:
         # 遍历文件的每一行
         for line in f:
             # 去掉行尾的换行符
@@ -23,7 +28,8 @@ def getConfigDict():
     # 返回字典
     return result
 
-def keyIsPress(keyCodes,rule):
+
+def keyIsPress(keyCodes, rule):
     """
     传入配置文件读取的规则和键值列表,判断规定的键是否按下
 
