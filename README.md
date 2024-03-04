@@ -58,9 +58,9 @@
 
 ## 使用到的库
 
-[pynput](https://github.com/moses-palmer/pynput):用于获取键盘输入和控制鼠标
-[pystray](https://github.com/moses-palmer/pystray):用于创建托盘图标
-[Pillow](https://github.com/python-pillow):用于加载托盘图标的图像
+- [pynput](https://github.com/moses-palmer/pynput):用于获取键盘输入和控制鼠标
+- [pystray](https://github.com/moses-palmer/pystray):用于创建托盘图标
+- [Pillow](https://github.com/python-pillow):用于加载托盘图标的图像
 
 ## 开发者
 
