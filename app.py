@@ -2,11 +2,10 @@
 # -*- encoding: utf-8 -*-
 import os
 import sys
-from pystray import Icon as PystrayIcon, Menu as PystrayMenu, MenuItem as PystrayMenuItem
-from PIL import Image
 from util.keyboardListener import KeyboardListener
 from util.loadSetting import getConfigDict, keyIsPress
 from util.mouseController import MouseController
+from util.SystemTrayIcon import SystemTrayIcon
 
 left_mouse_button_flag = False
 right_mouse_button_flag = False
@@ -29,8 +28,10 @@ def press(keys):
     # 如果激活
     if keyIsPress(keys, setting_dict['ACTIVATION']):
         mouse_move_speed = float(setting_dict['MOUSE_MOVE_SPEED'])
-        mouse_move_transverse_speed = float(setting_dict['MOUSE_MOVE_TRANSVERSE_SPEED']) * mouse_move_speed
-        mouse_move_diagonal_speed = float(setting_dict['MOUSE_MOVE_DIAGONAL_SPEED']) * mouse_move_speed
+        mouse_move_transverse_speed = float(
+            setting_dict['MOUSE_MOVE_TRANSVERSE_SPEED']) * mouse_move_speed
+        mouse_move_diagonal_speed = float(
+            setting_dict['MOUSE_MOVE_DIAGONAL_SPEED']) * mouse_move_speed
         mouse_scroll_speed = float(setting_dict['MOUSE_SCROLL_SPEED'])
         # 判断需要执行的操作
         mouse_up_flag = keyIsPress(keys, setting_dict['MOUSE_UP'])
@@ -41,16 +42,20 @@ def press(keys):
         left_or_right_flag = mouse_left_flag or mouse_right_flag
         if mouse_up_flag:
             print('鼠标上移')
-            mouse_ctl.mouseUp(mouse_move_diagonal_speed if left_or_right_flag else mouse_move_transverse_speed)
+            mouse_ctl.mouseUp(
+                mouse_move_diagonal_speed if left_or_right_flag else mouse_move_transverse_speed)
         if mouse_down_flag:
             print('鼠标下移')
-            mouse_ctl.mouseDown(mouse_move_diagonal_speed if left_or_right_flag else mouse_move_transverse_speed)
+            mouse_ctl.mouseDown(
+                mouse_move_diagonal_speed if left_or_right_flag else mouse_move_transverse_speed)
         if mouse_left_flag:
             print('鼠标左移')
-            mouse_ctl.mouseLeft(mouse_move_diagonal_speed if up_or_down_flag else mouse_move_transverse_speed)
+            mouse_ctl.mouseLeft(
+                mouse_move_diagonal_speed if up_or_down_flag else mouse_move_transverse_speed)
         if mouse_right_flag:
             print('鼠标右移')
-            mouse_ctl.mouseRight(mouse_move_diagonal_speed if up_or_down_flag else mouse_move_transverse_speed)
+            mouse_ctl.mouseRight(
+                mouse_move_diagonal_speed if up_or_down_flag else mouse_move_transverse_speed)
 
         if not left_mouse_button_flag and keyIsPress(keys, setting_dict['LEFT_MOUSE_BUTTON']):
             left_mouse_button_flag = True
@@ -124,36 +129,9 @@ def get_paths():
         print("已切换到文件所在路径。")
 
 
-def barIcon(image_path='./icon.png'):
-    """
-    用于显示托盘图标
-    """
+def refresh_config():
     global setting_dict
-
-    def on_exit():
-        print('exit触发')
-        icon.stop()
-
-    def refresh_config():
-        global setting_dict
-        print('refresh_config触发')
-        setting_dict = getConfigDict()
-
-    # 加载图标图像
-    icon_image = Image.open(image_path)
-
-    # 创建菜单
-    menu = PystrayMenu(
-        PystrayMenuItem('refreshConfig', action=refresh_config),
-        PystrayMenuItem('exit', action=on_exit),
-    )
-
-    # 创建图标
-    icon = PystrayIcon('keyboardControlMouse', icon_image,
-                       'keyboardControlMouse', menu)
-
-    # 开始运行图标
-    icon.run()
+    setting_dict = getConfigDict()
 
 
 def main():
@@ -162,11 +140,12 @@ def main():
     global mouse_ctl, setting_dict
     mouse_ctl = MouseController()
     setting_dict = getConfigDict()
+    sys_icon = SystemTrayIcon(refresh_config)
     # 开启键盘监听器
     listener = KeyboardListener(press, setting_dict['SCANNING_FREQUENCY'])
     listener.start()
     # 开启图标,阻塞主线程
-    barIcon()
+    sys_icon.start()
     # 图标关闭,退出程序
     listener.stop()
     sys.exit(0)
