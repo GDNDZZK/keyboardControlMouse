@@ -23,13 +23,19 @@ class KeyboardListener:
                     t = key.vk
                 else:
                     # 对于非Windows系统，使用scan属性
-                    t = key.scan
+                    try:
+                        t = key.scan
+                    except AttributeError:
+                        t = key.vk
             except AttributeError:
                 t = key.value
                 if platform.system() == 'Windows':
                     t = t.vk
                 else:
-                    t = t.scan
+                    try:
+                        t = t.scan
+                    except AttributeError:
+                        t = t.vk
             self.press_key_set.add(int(t))
 
     def on_release(self, key):
@@ -41,13 +47,19 @@ class KeyboardListener:
                         t = key.vk
                     else:
                         # 对于非Windows系统，使用scan属性
-                        t = key.scan
+                        try:
+                            t = key.scan
+                        except AttributeError:
+                            t = key.vk
                 except AttributeError:
                     t = key.value
                     if platform.system() == 'Windows':
                         t = t.vk
                     else:
-                        t = t.scan
+                        try:
+                            t = t.scan
+                        except AttributeError:
+                            t = t.vk
                 self.press_key_set.remove(int(t))
             except KeyError:
                 # 清除set
