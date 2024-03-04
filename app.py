@@ -31,16 +31,39 @@ def press(keys):
         mouse_move_speed = float(setting_dict['MOUSE_MOVE_SPEED'])
         mouse_scroll_speed = float(setting_dict['MOUSE_SCROLL_SPEED'])
         # 判断需要执行的操作
-        if keyIsPress(keys, setting_dict['MOUSE_UP']):
+        up_or_down_flag = False
+        left_or_right_flag = False
+        mouse_up_flag = keyIsPress(keys, setting_dict['MOUSE_UP'])
+        mouse_down_flag = keyIsPress(keys, setting_dict['MOUSE_DOWN'])
+        mouse_left_flag = keyIsPress(keys, setting_dict['MOUSE_LEFT'])
+        mouse_right_flag = keyIsPress(keys, setting_dict['MOUSE_RIGHT'])
+        if mouse_up_flag:
+            print('鼠标上移')
+            mouse_ctl.mouseUp(mouse_move_speed * 2)
+            up_or_down_flag = True
+        if mouse_down_flag:
+            print('鼠标下移')
+            mouse_ctl.mouseDown(mouse_move_speed * 2)
+            up_or_down_flag = True
+        if mouse_left_flag:
+            print('鼠标左移')
+            mouse_ctl.mouseLeft(mouse_move_speed * 2)
+            left_or_right_flag = True
+        if mouse_right_flag:
+            print('鼠标右移')
+            mouse_ctl.mouseRight(mouse_move_speed * 2)
+            left_or_right_flag = True
+        # 平移速度补偿
+        if mouse_up_flag and not left_or_right_flag:
             print('鼠标上移')
             mouse_ctl.mouseUp(mouse_move_speed)
-        if keyIsPress(keys, setting_dict['MOUSE_DOWN']):
+        if mouse_down_flag and not left_or_right_flag:
             print('鼠标下移')
             mouse_ctl.mouseDown(mouse_move_speed)
-        if keyIsPress(keys, setting_dict['MOUSE_LEFT']):
+        if mouse_left_flag and not up_or_down_flag:
             print('鼠标左移')
             mouse_ctl.mouseLeft(mouse_move_speed)
-        if keyIsPress(keys, setting_dict['MOUSE_RIGHT']):
+        if mouse_right_flag and not up_or_down_flag:
             print('鼠标右移')
             mouse_ctl.mouseRight(mouse_move_speed)
 
