@@ -10,7 +10,6 @@ class SystemTrayIcon:
         self.menu = PystrayMenu(
             PystrayMenuItem('refreshConfig', action=self.refresh_config),
             PystrayMenuItem('exit', action=self.on_exit),
-            PystrayMenuItem('test', action=self.change_icon_light),
         )
 
     def start(self):

@@ -14,6 +14,9 @@ mouse_scroll_up_flag = False
 mouse_scroll_down_flag = False
 mouse_scroll_left_flag = False
 mouse_scroll_right_flag = False
+permanent_activation_flag = False
+permanent_activation_press_flag = False
+icon_flag = False
 
 
 def press(keys):
@@ -23,10 +26,24 @@ def press(keys):
     Args:
         keys:键值组成的可迭代对象
     """
-    global left_mouse_button_flag, right_mouse_button_flag, middle_mouse_button_flag, mouse_scroll_up_flag, mouse_scroll_down_flag, mouse_scroll_left_flag, mouse_scroll_right_flag
+    global sys_icon, icon_flag, permanent_activation_flag, permanent_activation_press_flag
+    global left_mouse_button_flag, right_mouse_button_flag, middle_mouse_button_flag
+    global mouse_scroll_up_flag, mouse_scroll_down_flag, mouse_scroll_left_flag, mouse_scroll_right_flag
+    switch_permanent_activation_flag = keyIsPress(keys, setting_dict['SWITCH_PERMANENT_ACTIVATION'])
+    if not permanent_activation_press_flag and switch_permanent_activation_flag:
+        permanent_activation_press_flag = True
+        if permanent_activation_flag:
+            print('关闭一直激活')
+            permanent_activation_flag = False
+        else:
+            print('开启一直激活')
+            permanent_activation_flag = True
+    elif not switch_permanent_activation_flag:
+        permanent_activation_press_flag = False
     # 鼠标控制
     # 如果激活
-    if keyIsPress(keys, setting_dict['ACTIVATION']):
+    if permanent_activation_flag or keyIsPress(keys, setting_dict['ACTIVATION']):
+        now_icon_flag = True
         mouse_move_speed = float(setting_dict['MOUSE_MOVE_SPEED'])
         mouse_move_transverse_speed = float(
             setting_dict['MOUSE_MOVE_TRANSVERSE_SPEED']) * mouse_move_speed
@@ -106,6 +123,16 @@ def press(keys):
             mouse_ctl.scrollRight(mouse_scroll_speed)
         elif mouse_scroll_right_flag and not keyIsPress(keys, setting_dict['MOUSE_SCROLL_RIGHT']):
             mouse_scroll_right_flag = False
+    else:
+        now_icon_flag = False
+    if now_icon_flag != icon_flag:
+        icon_flag = now_icon_flag
+        if icon_flag:
+            print('点亮图标')
+            sys_icon.change_icon_light()
+        else:
+            print('熄灭图标')
+            sys_icon.change_icon_normal()
 
 
 def get_paths():
@@ -137,7 +164,7 @@ def refresh_config():
 def main():
     # 确保工作路径正确
     get_paths()
-    global mouse_ctl, setting_dict
+    global mouse_ctl, setting_dict, sys_icon
     mouse_ctl = MouseController()
     setting_dict = getConfigDict()
     sys_icon = SystemTrayIcon(refresh_config)
