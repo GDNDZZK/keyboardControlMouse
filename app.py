@@ -2,6 +2,7 @@
 # -*- encoding: utf-8 -*-
 import os
 import sys
+from util.globalHotKeyManager import GlobalHotKeyManager
 from util.keyboardListener import KeyboardListener
 from util.loadSetting import getConfigDict, keyIsPress
 from util.mouseController import MouseController
@@ -157,16 +158,37 @@ def get_paths():
 
 
 def refresh_config():
-    global setting_dict
+    global setting_dict, global_hot_key
     setting_dict = getConfigDict()
+    global_hot_key.delete()
+    register_global_hot_key()
+
+
+def register_global_hot_key():
+    global global_hot_key, setting_dict
+    # 遍历setting_dict
+    for setting_key, setting_value in setting_dict.items():
+        ext = list()
+        if setting_key != 'SWITCH_PERMANENT_ACTIVATION' and setting_key != 'ACTIVATION':
+            ext = setting_dict['ACTIVATION']
+        for i in setting_value.split('|'):
+            ext.extend(i.split('+'))
+            keys = set(ext)
+            global_hot_key.register(keys)
 
 
 def main():
     # 确保工作路径正确
     get_paths()
-    global mouse_ctl, setting_dict, sys_icon
+    global mouse_ctl, setting_dict, sys_icon, global_hot_key
+    # 鼠标控制器
     mouse_ctl = MouseController()
+    # 读取设置
     setting_dict = getConfigDict()
+    # 注册全局热键
+    global_hot_key = GlobalHotKeyManager()
+    register_global_hot_key()
+    # 托盘图标
     sys_icon = SystemTrayIcon(refresh_config)
     # 开启键盘监听器
     listener = KeyboardListener(press, setting_dict['SCANNING_FREQUENCY'])
@@ -175,6 +197,7 @@ def main():
     sys_icon.start()
     # 图标关闭,退出程序
     listener.stop()
+    global_hot_key.delete()
     sys.exit(0)
 
 
