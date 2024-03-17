@@ -25,9 +25,12 @@ def get_size():
     # 获取终端宽度
     size = os.get_terminal_size().columns
     # 为Windows打包后似乎只有输出80个空格才能正确覆盖上一行,我不理解这是为什么,总之先写上了
-    current_file_dir = os.path.dirname(__file__)
-    if '_internal' == current_file_dir[-9:]:
-        size = 80
+    try:
+        current_file_dir = os.path.dirname(__file__)
+        if '_internal' == current_file_dir[-9:]:
+            size = 80
+    except NameError:
+        pass
     return size
 
 def main():
