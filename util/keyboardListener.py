@@ -31,6 +31,7 @@ class KeyboardListener:
                 self.press_key_set.remove(str(t).lower())
             except KeyError:
                 # 清除set
+                print("发生错误,清空按键")
                 self.press_key_set.clear()
 
     def start_listener(self):

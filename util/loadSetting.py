@@ -24,7 +24,7 @@ def getConfigDict():
                 # 用等号分割键和值
                 key, value = line.split("=", 1)
                 # 将键值对添加到字典中
-                result[key] = value
+                result[key] = value.lower()
     # 返回字典
     global setting_dict
     setting_dict = result

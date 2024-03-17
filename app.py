@@ -45,7 +45,7 @@ def press(keys):
     # 如果激活
     if permanent_activation_flag or keyIsPress(keys, setting_dict['ACTIVATION']):
         now_icon_flag = True
-        mouse_move_speed = float(setting_dict['MOUSE_MOVE_SPEED'])
+        mouse_move_speed = float(setting_dict['MOUSE_FAST_MOVE_SPEED']) if keyIsPress(keys,setting_dict['MOUSE_FAST_MOVE']) else float(setting_dict['MOUSE_MOVE_SPEED'])
         mouse_move_transverse_speed = float(
             setting_dict['MOUSE_MOVE_TRANSVERSE_SPEED']) * mouse_move_speed
         mouse_move_diagonal_speed = float(
@@ -136,7 +136,7 @@ def press(keys):
             sys_icon.change_icon_normal()
 
 
-def get_paths():
+def checkPath():
     """确保工作路径正确"""
     # 获取当前工作路径
     current_work_dir = os.getcwd()
@@ -157,7 +157,7 @@ def get_paths():
         print("已切换到文件所在路径。")
 
 
-def register_global_hot_key():
+def registerGlobalHotKey():
     global global_hot_key, setting_dict
     # 遍历setting_dict
     for setting_key, setting_value in setting_dict.items():
@@ -175,7 +175,7 @@ def register_global_hot_key():
 
 def main():
     # 确保工作路径正确
-    get_paths()
+    checkPath()
     global mouse_ctl, setting_dict, sys_icon, global_hot_key
     # 鼠标控制器
     mouse_ctl = MouseController()
@@ -183,7 +183,7 @@ def main():
     setting_dict = getConfigDict()
     # 注册全局热键
     global_hot_key = GlobalHotKeyManager()
-    register_global_hot_key()
+    registerGlobalHotKey()
     global_hot_key.start()
     # 托盘图标
     sys_icon = SystemTrayIcon()
