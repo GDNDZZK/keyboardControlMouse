@@ -12,22 +12,33 @@
 - 可自定义快捷键,适应不同用户习惯
 - 跨平台支持（Windows, macOS, Linux）
 
-## 安装指南
+## 使用方法
+
+#### 1.使用Relese版本
+
+1. 下载并解压7z压缩包
+2. 运行程序:
+
+   ```
+   keyboardControlMouse.exe
+   ```
+3. 开始使用键盘控制鼠标
+
+#### 2.从源代码构建
 
 1. 克隆或下载此仓库到本地
 2. 确保你的Python版本在3.6及以上
 3. 安装必要的Python库：
+
    ```shell
    pip install -r requirements.txt
    ```
+4. 运行程序：
 
-## 使用方法
-
-1. 运行程序：
    ```
    app.py
    ```
-2. 开始使用键盘控制鼠标
+5. 开始使用键盘控制鼠标
 
 ## 默认快捷键
 
@@ -52,7 +63,7 @@
 
 1. 在 `config.ini`文件中,你可以自定义你的快捷键设置。
 2. 支持自定义组合键和多种触发方式,可以参考 `config.ini`中的 `ACTIVATION`
-3. 需要输入按键对应的名称,如不清楚可以在终端中运行 `tool.py`
+3. 需要输入按键对应的名称,如不清楚可以运行运行 `tool.exe`或在终端中运行 `tool.py`
 4. 还可以调整移动速度,滚轮速度等
 
 ## 使用到的库
@@ -63,8 +74,8 @@
 
 ## 开发者
 
-由[GDNDZZK](https://github.com/GDNDZZK)开发和维护。
+由[GDNDZZK](https://github.com/GDNDZZK)开发和维护
 
 ## 许可证
 
-本项目使用MIT许可证,详情请参阅[LICENSE](https://github.com/GDNDZZK/keyboardControlMouse/blob/master/LICENSE)文件。
+本项目使用MIT许可证,详情请参阅[LICENSE](https://github.com/GDNDZZK/keyboardControlMouse/blob/master/LICENSE)文件
