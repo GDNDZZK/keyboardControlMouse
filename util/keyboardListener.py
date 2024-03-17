@@ -1,5 +1,4 @@
 # -*- encoding: utf-8 -*-
-import platform
 import threading
 import time
 from pynput import keyboard
@@ -10,57 +9,26 @@ class KeyboardListener:
         self.function = function  # 要执行的函数
         self.scanningFrequency = scanningFrequency  # 频率
         self.press_key_set = set()
-        self.lock = threading.Lock()
         self.stop_event = threading.Event()
         self.listener_thread = None
         self.scanner_thread = None
 
     def on_press(self, key):
-        with self.lock:
             # 记录按下的键
             try:
-                if platform.system() == 'Windows':
-                    t = key.vk
-                else:
-                    # 对于非Windows系统，使用scan属性
-                    try:
-                        t = key.scan
-                    except AttributeError:
-                        t = key.vk
+                t = key.char
             except AttributeError:
-                t = key.value
-                if platform.system() == 'Windows':
-                    t = t.vk
-                else:
-                    try:
-                        t = t.scan
-                    except AttributeError:
-                        t = t.vk
-            self.press_key_set.add(int(t))
+                t = f'<{key.name}>'
+            self.press_key_set.add(str(t).lower())
 
     def on_release(self, key):
-        with self.lock:
             # 移除松开的键
             try:
-                try:
-                    if platform.system() == 'Windows':
-                        t = key.vk
-                    else:
-                        # 对于非Windows系统，使用scan属性
-                        try:
-                            t = key.scan
-                        except AttributeError:
-                            t = key.vk
-                except AttributeError:
-                    t = key.value
-                    if platform.system() == 'Windows':
-                        t = t.vk
-                    else:
-                        try:
-                            t = t.scan
-                        except AttributeError:
-                            t = t.vk
-                self.press_key_set.remove(int(t))
+                t = key.char
+            except AttributeError:
+                t = f'<{key.name}>'
+            try:
+                self.press_key_set.remove(str(t).lower())
             except KeyError:
                 # 清除set
                 self.press_key_set.clear()
@@ -75,8 +43,7 @@ class KeyboardListener:
     def start_scanner(self):
         while not self.stop_event.is_set():
             time.sleep(1 / float(self.scanningFrequency))
-            with self.lock:
-                self.function(self.press_key_set)
+            self.function(self.press_key_set)
 
     def start(self):
         self.listener_thread = threading.Thread(target=self.start_listener)

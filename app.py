@@ -157,22 +157,18 @@ def get_paths():
         print("已切换到文件所在路径。")
 
 
-def refresh_config():
-    global setting_dict, global_hot_key
-    setting_dict = getConfigDict()
-    global_hot_key.delete()
-    register_global_hot_key()
-
-
 def register_global_hot_key():
     global global_hot_key, setting_dict
     # 遍历setting_dict
     for setting_key, setting_value in setting_dict.items():
+        if 'SPEED' in setting_key.split('_') or 'FREQUENCY' in setting_key.split('_'):
+            continue
         ext = list()
         if setting_key != 'SWITCH_PERMANENT_ACTIVATION' and setting_key != 'ACTIVATION':
-            ext = setting_dict['ACTIVATION']
-        for i in setting_value.split('|'):
-            ext.extend(i.split('+'))
+            for j in [i.split(setting_dict['AND']) for i in setting_dict['ACTIVATION'].split(setting_dict['OR'])]:
+                ext.extend(j)
+        for i in setting_value.split(setting_dict['OR']):
+            ext.extend(i.split(setting_dict['AND']))
             keys = set(ext)
             global_hot_key.register(keys)
 
@@ -188,8 +184,9 @@ def main():
     # 注册全局热键
     global_hot_key = GlobalHotKeyManager()
     register_global_hot_key()
+    global_hot_key.start()
     # 托盘图标
-    sys_icon = SystemTrayIcon(refresh_config)
+    sys_icon = SystemTrayIcon()
     # 开启键盘监听器
     listener = KeyboardListener(press, setting_dict['SCANNING_FREQUENCY'])
     listener.start()

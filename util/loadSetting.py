@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 import os
 
-
+setting_dict = dict()
 def getConfigDict():
     """
     读取配置文件并返回一个字典
@@ -26,26 +26,29 @@ def getConfigDict():
                 # 将键值对添加到字典中
                 result[key] = value
     # 返回字典
+    global setting_dict
+    setting_dict = result
     return result
 
 
-def keyIsPress(keyCodes, rule):
+def keyIsPress(keys, rule):
     """
-    传入配置文件读取的规则和键值列表,判断规定的键是否按下
+    传入配置文件读取的规则和键列表,判断规定的键是否按下
 
     Args:
-    - keyCodes:[164,91,79]
-    - rule:"91+164|91+163"
+    - keys:['<cmd>','<alt_l>']
+    - rule:"<cmd>与<alt_l>或<cmd>与<alt_gr>"
 
     Returns:
     - bool
     """
-    rule_split = rule.split("|")
+    global setting_dict
+    rule_split = rule.split(setting_dict['OR'])
     for a_rule in rule_split:
-        rule_keys = a_rule.split("+")
+        rule_keys = a_rule.split(setting_dict['AND'])
         flag = True
         for key in rule_keys:
-            if not int(key) in keyCodes:
+            if not key in keys:
                 flag = False
                 break
         if flag:

@@ -3,12 +3,10 @@ from PIL import Image
 
 
 class SystemTrayIcon:
-    def __init__(self, refresh_config_def, image_path='./icon.png', light_image_path='./icon_light.png'):
+    def __init__(self, image_path='./icon.png', light_image_path='./icon_light.png'):
         self.icon_image = Image.open(image_path)
         self.light_icon_image = Image.open(light_image_path)
-        self.refresh_config_def = refresh_config_def
         self.menu = PystrayMenu(
-            PystrayMenuItem('refreshConfig', action=self.refresh_config),
             PystrayMenuItem('exit', action=self.on_exit),
         )
 
