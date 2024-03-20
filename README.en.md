@@ -4,8 +4,11 @@
 **此文档使用机器翻译,可能存在翻译错误**
 
 [![GitHub license](https://img.shields.io/github/license/GDNDZZK/keyboardControlMouse.svg)](https://github.com/GDNDZZK/keyboardControlMouse/blob/master/LICENSE) ![Python版本](https://img.shields.io/badge/python-3.6%2B-blue)
+
 I wrote this program because I couldn't find a software I was satisfied with. It is a program written in Python that can smoothly control the mouse through keyboard combinations, supporting multiple mouse operations without the need to switch frequently.
+
 [Demo Video](https://www.bilibili.com/video/BV1xH4y1s7kg)
+
 [中文](./README.md)
 
 ## Features
@@ -26,7 +29,6 @@ I wrote this program because I couldn't find a software I was satisfied with. It
    ```
    keyboardControlMouse.exe
    ```
-
 3. Start using the keyboard to control the mouse
 
 ### Building from Source
@@ -38,13 +40,11 @@ I wrote this program because I couldn't find a software I was satisfied with. It
    ```
    pip install -r requirements.txt
    ```
-
 4. Run the program:
 
    ```
    app.py
    ```
-
 5. Start using the keyboard to control the mouse
 
 ## Default Shortcuts

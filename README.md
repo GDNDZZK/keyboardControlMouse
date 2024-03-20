@@ -1,8 +1,11 @@
 # 键盘控制鼠标
 
 [![GitHub license](https://img.shields.io/github/license/GDNDZZK/keyboardControlMouse.svg)](https://github.com/GDNDZZK/keyboardControlMouse/blob/master/LICENSE) ![Python版本](https://img.shields.io/badge/python-3.6%2B-blue)
+
 因为我实在找不到用着顺手的软件,于是自己写了一个。这是一个使用 Python 编写的程序,可以通过键盘组合键丝滑的控制鼠标,同时进行多种鼠标操作,不再需要频繁切换。
+
 [演示视频](https://www.bilibili.com/video/BV1xH4y1s7kg)
+
 [English](./README.en.md)
 
 ## 功能特点
